@@ -70,14 +70,14 @@ if not st.session_state.get('pr_context') and st.session_state.log_input:
 
 # If PR context is available, prepare combined log
 if st.session_state.get('pr_context'):
-    # Concatenate failed logs and diff for analysis
+    # Build combined log from failed logs and diff for analysis
     combined_log = "\n---FAILED LOGS---\n" + "\n".join(st.session_state.pr_context['failed_logs']) + "\n---DIFF---\n" + st.session_state.pr_context['pr_diff']
-    st.session_state.redacted = combined_log  # reuse variable for simplicity
-    redacted_text, count, types_found = redact_text(st.session_state.log_input)
+    # Redact any secrets in the combined payload
+    redacted_text, count, types_found = redact_text(combined_log)
     st.session_state.redacted = redacted_text
     st.session_state.redact_count = count
     st.session_state.redact_types = types_found
-    st.success(f"🔒 {count} secrets redacted")
+    st.success(f"🔒 {count} secrets redacted from PR data")
     st.write(redacted_text[:1000] + ("..." if len(redacted_text) > 1000 else ""))
 
 
