@@ -157,7 +157,7 @@ def cached_call(prompt: str, mode: str, language: str) -> Dict[str, Any]:
     """
     key_raw = f"{prompt}\n{mode}\n{language}".encode("utf-8")
     key = hashlib.sha256(key_raw).hexdigest()
-    with cache_lock:
+    with _cache_lock:
         if key in _cache_store:
             cached = _cache_store[key].copy()
             cached["cached"] = True

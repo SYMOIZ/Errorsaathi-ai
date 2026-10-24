@@ -44,8 +44,11 @@ with tab1:
     st.session_state.log_input = st.text_area("Paste your log here", height=300, value=st.session_state.log_input)
     if st.button("Load Sample 1"):
         sample_path = "samples/docker_build_fail.log"
-        with open(sample_path, "r", encoding="utf-8") as f:
-            st.session_state.log_input = f.read()
+        try:
+            with open(sample_path, "r", encoding="utf-8") as f:
+                st.session_state.log_input = f.read()
+        except FileNotFoundError:
+            st.warning(f"Sample file not found at {sample_path}. Please ensure the file exists or paste your log manually.")
 with tab2:
     uploaded = st.file_uploader("Choose a .log or .txt file", type=["log", "txt"])
     if uploaded is not None:

@@ -1,5 +1,6 @@
 import json
 from typing import List, Dict, Any
+import re
 import llm
 
 def _build_prompt(logs: List[str], diff: str) -> str:
