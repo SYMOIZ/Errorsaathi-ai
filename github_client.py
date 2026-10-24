@@ -6,8 +6,13 @@ from typing import Dict, List, Any, Optional
 import requests
 from urllib.parse import urlparse
 
-# GitHub API helper – uses a personal access token from .env
-_GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+# GitHub API helper – uses a personal access token from .env or Streamlit secrets
+try:
+    import streamlit as st
+except Exception:
+    st = None
+
+_GITHUB_TOKEN = os.getenv("GITHUB_TOKEN") or (st.secrets.get("GITHUB_TOKEN") if st else None)
 
 _API_BASE = "https://api.github.com"
 
